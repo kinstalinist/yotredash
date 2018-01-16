@@ -88,6 +88,7 @@ use std::path::Path;
 use std::sync::mpsc;
 use winit::EventsLoop;
 use failure::Error;
+use failure::ResultExt;
 
 #[cfg(unix)]
 use signal::Signal;
@@ -186,6 +187,14 @@ fn run() -> Result<(), Error> {
 
     // Setup filesystem watches
     let (mut _watcher, mut receiver) = setup_watches(&config_path, &config)?;
+
+    // Setup audio
+    #[cfg(feature = "audio")]
+    let audio = {
+        let mut audio = audio::setup().context("Audio subsystem setup failed.")?;
+        audio.run();
+        audio
+    };
 
     // Creates an appropriate renderer for the configuration, exits with an error if that fails
     let mut events_loop = winit::EventsLoop::new();
