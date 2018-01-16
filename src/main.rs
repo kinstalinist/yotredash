@@ -65,6 +65,11 @@ extern crate gif_dispose;
 #[cfg(feature = "image-src")]
 extern crate image;
 
+#[cfg(feature = "audio")]
+extern crate portaudio;
+#[cfg(feature = "audio")]
+extern crate rb;
+
 pub mod config;
 pub mod font;
 pub mod platform;
@@ -74,6 +79,9 @@ pub mod util;
 
 #[cfg(feature = "opengl")]
 pub mod opengl;
+
+#[cfg(feature = "audio")]
+pub mod audio;
 
 use notify::Watcher;
 use std::path::Path;
