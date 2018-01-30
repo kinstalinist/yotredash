@@ -1,0 +1,76 @@
+$schema: 'http://json-schema.org/draft-06/schema#'
+type: object
+properties:
+    _cwd: { type: string }
+    nodes:
+        type: object
+        additionalProperties:
+            type: object
+            properties:
+                oneOf:
+                    - type: info
+                    - type: output
+                      texture: { $ref: '#/definitions/NodeConnection' }
+                    - type: image
+                      path: { type: string }
+                    - type: shader
+                      vertex: { type: string }
+                      fragment: { type: string }
+                      uniforms:
+                          type: array
+                          items: { $ref: '#/definitions/NodeConnection' }
+                    - type: blend
+                      operation: { enum: [min, max, add, sub] }
+                      textures:
+                          type: array
+                          items: { $ref: '#/definitions/NodeConnection' }
+                    - type: text
+                      text:
+                          oneOf:
+                              - $ref: '#/definitions/NodeConnection'
+                              - type: string
+                      position: { $ref: '#/definitions/NodeParameter_position' }
+                      color: { $ref: '#/definitions/NodeParameter_color' }
+                      font_name: { type: string }
+                      font_size: { type: number }
+                    - type: fps
+                      position: { $ref: '#/definitions/NodeParameter_position' }
+                      color: { $ref: '#/definitions/NodeParameter_color' }
+                      font_name: { type: string }
+                      font_size: { type: number }
+                      interval: { type: number }
+    width: { type: integer }
+    height: { type: integer }
+    maximize: { type: boolean }
+    fullscreen: { type: boolean }
+    vsync: { type: boolean }
+    renderer: { type: string }
+    headless: { type: boolean }
+    autoreload: { type: boolean }
+    platform_config:
+        type: object
+        properties:
+            root: { type: boolean }
+            override_redirect: { type: boolean }
+            desktop: { type: boolean }
+            lower_window: { type: boolean }
+definitions:
+    NodeConnection:
+        type: object
+        properties:
+            node: { type: string }
+            output: { type: string }
+    NodeParameter_position:
+        oneOf:
+            - $ref: '#/definitions/NodeConnection'
+            - type: array
+              items: { type: number }
+              minItems: 2
+              maxItems: 2
+    NodeParameter_color:
+        oneOf:
+            - $ref: '#/definitions/NodeConnection'
+            - type: array
+              items: { type: number }
+              minItems: 4
+              maxItems: 4
